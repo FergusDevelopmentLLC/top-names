@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Most Popular U.S. Names (1910-2016)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0">
+
+		<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+		<link rel="stylesheet" href="css/bulma.css">
+		<link rel="stylesheet" href="css/custom.css">
+
+    <script src="js/utils.js"></script>
+    <script src="js/pie.js"></script>
+    <script src="js/piechart-utils.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="http://colorbrewer2.org/export/colorbrewer.js"></script>
+    <script src="https://unpkg.com/simple-statistics@4.1.0/dist/simple-statistics.min.js"></script>
+
+		<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=59f25fa958ca400012955903&product=inline-share-buttons"></script>
+		<!-- https://github.com/bgrins/TinyColor -->
+    <script src="js/tinycolor.js"></script>
+
+    <style>
+
+		</style>
+</head>
+<body>
+
+	<section class="hero is-primary">
+		<div class="hero-head">
+			<nav class="navbar main-nav">
+				<div class="container">
+					<div class="navbar-brand">
+						<div class="navbar-item"><span id='navbar-year'></span>&nbsp;Most Popular U.S.&nbsp;<span id='navbar-gender'></span>&nbsp;Names</div>
+						<span class="navbar-burger burger" data-target="navbarMenuHeroA">
+							<span></span>
+							<span></span>
+							<span></span>
+						</span>
+					</div>
+					<div id="navbarMenuHeroA" class="navbar-menu">
+						<a class="navbar-end navbar-item about-link about-link-header">About this Map</a>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</section>
+
+	<section class="section" id="main">
+		<div class="container is-fluid">
+			<div class="columns">
+				<div class="column is-8">
+					<div id='map-wrapper'></div>
+				</div>
+				<div class="column is-4">
+					<div class="columns is-multiline">
+						<div class="column is-12 year-column">
+							<div id='year-wrapper'>2016</div>
+						</div>
+						<div class="column is-12 donut-column">
+							<div id='donut-wrapper'></div>
+						</div>
+						<div class="column is-12 boygirl-column">
+							<div class='boygirl-switch-column'>
+								<div class="field has-addons boygirl">
+									<p class="control">
+										<a class="button" id="button-boy">
+											<span>Boy</span>
+										</a>
+									</p>
+									<p class="control">
+										<a class="button" id="button-girl">
+											<span>Girl</span>
+										</a>
+									</p>
+								</div>
+								<input type="hidden" id="gender" name="gender" value="M" />
+							</div>
+						</div>
+						<div class="column is-12 slider-column">
+							<div id='slider-wrapper'>
+								<input type='range' id='slider-year' class='slider-year' />
+							</div>
+						</div>
+						<div class="column is-12 slider-label-column">
+							<div class="slider-label-column">
+								<div id='min-year-label' class='year-label'>1910</div>
+								<div id='max-year-label' class='year-label'>2016</div>
+							</div>
+						</div>
+						<div class="column is-12">
+							<div class="sharethis-inline-share-buttons"></div>
+							<div id='about-legend-wrapper'>
+								Data Source: <a href='https://www.ssa.gov/oact/babynames/limits.html' target='_blank'>U.S. Social Security Administration</a><br/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer class="footer">
+		<div class="container">
+			<div class="content has-text-centered footer-content">
+				<p>
+					&copy; Copyright <span id='copyright-year'></span> <a href='https://fergusdevelopmentllc.github.io/'>Fergus Development LLC</a>
+				</p>
+			</div>
+		</div>
+	</footer>
+
+	<div class="modal">
+	  <div class="modal-background"></div>
+	  <div class="modal-content">
+			<h1>Most Popular U.S. Names (1910-2016)</h1>
+	    <p>This map was created was built on ...</p>
+			<ul>
+				<li><a href='http://newmapsplus.uky.edu/' target='_blank'><img src='images/NMP_120x50.png' id='about-nmp' /></a></li>
+				<li><a href='https://d3js.org/'><img src='images/d3_40x38.png' /></a></li>
+				<li><a href='http://postgis.net/'><img src='images/postgis_66x38.png' /></a></li>
+				<li><a href="https://nodejs.org"><img src='images/nodejs_62x38.png' /></a></li>
+				<li><a href="https://www.python.org/"><img src='images/python_150x38.png' /></a></li>
+				<li><a href="https://github.com/topojson/topojson"><img src='images/topojson_79x38.png' /></a></li>
+				<li><a href="https://bulma.io/"><img src='images/bulma_82x38.png' /></a></li>
+				<li><a href="http://sass-lang.com/"><img src='images/sass_33x38.png' /></a></li>
+				<li><a href="https://bl.ocks.org/martinjc/e46f38d44a049a61ab1c2d97a2413439">@martinjc's donut</a></li>
+
+			</ul>
+			<h2>Thanks for checking out my project!</h2>
+			<p>Check out the <a href='https://github.com/FergusDevelopmentLLC/names-map-node'>GitHub repo</a> and <a href='https://fergusdevelopmentllc.github.io/'>my portfolio</a> for a deeper look. Have a question, suggestion or idea? <a href='https://twitter.com/zippyFerguson' target='_blank'>Let me know</a>! For a similar project where you can look up a name from over 33,000 possible popular names, check out the following <a href='http://whatsinaname.us/' target='_blank'>project</a>. - <a href='https://fergusdevelopmentllc.github.io/'>Will Carter</a></p>
+			<div id='about-map-img-wrapper'>
+				<a href='http://whatsinaname.us/' target='_blank'><img src='https://fergusdevelopmentllc.github.io/images/names_800x400.png' /></a>
+			</div>
+	    <button class="modal-close is-large" aria-label="close"></button>
+	  </div>
+	</div>
+
+	<script>
+
+	  var width = 900,
+	      height = 500,
+	      this_year = 2016,
+	      min_year = 1910,
+	      max_year = 2016,
+	      novaluecolor = '#ffffff',
+	      tooltip = '',
+	      slider = '',
+	      handle = '',
+	      spinner = '',
+	      default_sex = 'F',
+				sex = 'F',
+				prev_sex = 'F',
+	      nameColor = [],
+	      states_geom = '',
+	      names_data = '',
+	      pie_width = 400,
+	      pie_height = 200,
+				pie_margin_top = 0,
+				pie_margin_bottom = 0,
+				pie_margin_left = 0,
+				pie_margin_right = 0;
+
+	  var css_color_names = ["sandybrown","cyan","aquamarine","burlywood","cadetblue","chartreuse","coral","cornflowerblue","cyan","darkgoldenrod","darkkhaki","darkorange","darksalmon","darkseagreen","darkturquoise","deepskyblue","gold","goldenrod","greenyellow","hotpink","khaki","lawngreen","lightblue","lightcoral","lightgreen","lightpink","lightsalmon","lightseagreen","lightskyblue","lightsteelblue","lime","limegreen","mediumaquamarine","#e6c2ef","mediumpurple","mediumseagreen","mediumspringgreen","mediumturquoise","orange","orchid","palegoldenrod","palegreen","paleturquoise","palevioletred","peru","pink","plum","powderblue","rosybrown","salmon","#ffb3b3","skyblue","#eed7f4","springgreen","tan","tomato","turquoise","violet","wheat","yellow","yellowgreen"];
+
+		d3.selectAll('.about-link').on('click', function() {
+			d3.selectAll('.modal').classed('is-active', true);
+		});
+
+		d3.selectAll('.modal-close').on('click', function() {
+			d3.selectAll('.modal').classed('is-active', false);
+		});
+
+		handleBoyGirlClick();
+
+		if(sex == 'M') { d3.select('#navbar-gender').html('Boys'); }
+		if(sex == 'F') { d3.select('#navbar-gender').html('Girls'); }
+
+		d3.select('#gender').attr('value', sex);
+
+	  css_color_names = shuffleArray(css_color_names);
+
+	  var svg = d3.select("#map-wrapper")
+	    .append("svg")
+				.attr('viewBox', '0 0 900 500')
+	      .attr('id', 'svg-canvas');
+
+	  var defs = svg.append("defs");//Container for the gradients
+
+		//Code taken from http://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg
+		//Filter for the outside glow
+		var filter = defs.append("filter")
+			.attr("id","glow");
+
+	  //for glow effect on text, from http://bl.ocks.org/nbremer/d3189be2788ad3ca825f665df36eed09
+		filter.append("feGaussianBlur")
+			.attr("class", "blur")
+			.attr("stdDeviation","2")
+			.attr("result","coloredBlur");
+
+		var feMerge = filter.append("feMerge");
+		feMerge.append("feMergeNode")
+			.attr("in","coloredBlur");
+		feMerge.append("feMergeNode")
+			.attr("in","SourceGraphic");
+
+	  var geoPath = d3.geoPath()
+	    .projection(d3.geoAlbersUsa()
+	      .scale(1050)
+	      .translate([width / 2, height / 2]));
+
+	  tooltip = d3.select("body").append("div")
+	    .attr("class", "tooltip")
+	    .style("opacity", 0);
+
+	  sex = getSexFromQS();
+
+	  this_year = getYearFromQS();
+
+		d3.select('#navbar-year').html(this_year);
+
+	  getData();
+
+	  function getData() {
+	    var top_name_json = "data/boys.json";
+	    if(sex == 'F') { top_name_json = "data/girls.json"; }
+	    d3.queue()
+	      .defer(d3.json, 'data/states.topojson')
+	      .defer(d3.json, top_name_json)
+	      .await(init);
+	  }
+
+	  function init(error, topo, data) {
+
+	    states_geom = topo;
+
+	    names_data = data;
+
+	    d3.select('#states').remove();
+
+	    svg.append("g")
+	      .attr("id","states")
+	      .selectAll("path")
+	      .data( topojson.feature(states_geom, states_geom.objects.states).features )
+	        .enter()
+	        .append("path")
+	        .attr("d",geoPath)
+	        .attr("class", "state");
+
+	    makeMap();
+	  }
+
+	  function makeMap () {
+
+			clearMap();
+
+			setMaleFemaleSwitch();
+
+	    populateNameColor();
+
+	    addStatesToMap();
+
+			addSlider();
+
+			joinDataToGeom();
+
+	    handlePieChart();
+
+	    updateMap();
+
+	  };
+
+		function handlePieChart() {
+
+			var nm_object_array = getPiechartNameObjArray();
+	    d3.select("#pie-chart").remove();
+	    addLegendPieChart(nm_object_array, pie_height, pie_width);
+
+		}
+
+		function handleBoyGirlClick() {
+
+			d3.selectAll('.button').on('click', function(data, index) {
+
+				var gen = 'M';
+				if(index == 1) { gen = 'F'}
+
+				tooltip.style("opacity", 0);
+
+				d3.select('#gender').attr('value', sex);
+
+				prev_sex = sex;
+
+				sex = gen;
+
+				d3.select('#gender').attr('value', sex);
+
+				if(sex == 'M') { d3.select('#navbar-gender').html('Boys'); }
+				if(sex == 'F') { d3.select('#navbar-gender').html('Girls'); }
+
+				getData();
+
+				joinDataToGeom();
+
+		  });
+
+		}
+
+		function getPiechartNameObjArray() {
+	    var unique_names = [];
+	    for (var yr_st_nm in names_data) {
+	      if(names_data[yr_st_nm].yr == this_year) {
+	        if(unique_names.indexOf(names_data[yr_st_nm].name) == -1) {
+	          unique_names.push(names_data[yr_st_nm].name);
+	        }
+	      }
+	    }
+
+	    var nm_object_array = [];
+
+	    for (var nm in unique_names) {
+
+	      var this_nm = unique_names[nm];
+
+	      var name_obj = {};
+	      name_obj.name = this_nm;
+	      name_obj.total = 0;
+
+	      for (var yr_st_nm in names_data) {
+	        if(names_data[yr_st_nm].yr == this_year && this_nm == names_data[yr_st_nm].name) {
+	          name_obj.total += parseInt(names_data[yr_st_nm].total);
+	        }
+	      }
+
+	      nm_object_array.push(name_obj);
+
+	    }
+
+	    var grand_total = 0;
+
+	    for (var nm in nm_object_array) {
+	      nm_object_array[nm].color = getColorForName(nm_object_array[nm].name);
+	      grand_total += nm_object_array[nm].total;
+	    }
+
+	    var final_nm_object_array = [];
+	    var other_pct = 0;
+	    for (var nm in nm_object_array) {
+	      nm_object_array[nm].pct = nm_object_array[nm].total / grand_total;
+	      if(nm_object_array[nm].pct > .03) {
+	        final_nm_object_array.push(nm_object_array[nm])
+	      }
+	      else {
+	        other_pct += nm_object_array[nm].pct
+	      }
+	    }
+
+	    if(other_pct > 0) {
+	      var other_obj = {};
+	      other_obj.name = 'Other';
+	      other_obj.pct = other_pct;
+	      other_obj.color = "Grey";
+	      final_nm_object_array.push(other_obj);
+	    }
+
+	    //console.log(final_nm_object_array);
+
+	    return final_nm_object_array;
+	  }
+
+		function setMaleFemaleSwitch() {
+
+			var gender = d3.select('#gender').attr('value');
+
+			if(gender == 'M') {
+				var button_boy = d3.select('#button-boy');
+				button_boy.classed('is-primary', true);
+
+				var button_girl = d3.select('#button-girl');
+				button_girl.classed('is-primary', false);
+
+			}
+
+			if(gender == 'F') {
+				var button_girl = d3.select('#button-girl');
+				button_girl.classed('is-primary', true);
+
+				var button_boy = d3.select('#button-boy');
+				button_boy.classed('is-primary', false);
+
+			}
+		}
+
+	  function joinDataToGeom() {
+	    states_geom.objects.states.geometries.forEach(function(d) {
+	      var layer_stusps = d.properties.stusps;
+	      for (var yr_st_nm in names_data) {
+	        if(layer_stusps == names_data[yr_st_nm].st && names_data[yr_st_nm].yr == this_year) {
+	          d.properties.top_name = names_data[yr_st_nm].name;
+	          d.properties.yr = names_data[yr_st_nm].yr;
+	          d.properties.color = getColorForName(d.properties.top_name);
+	        }
+	      }
+	    });
+	  }
+
+	  function addStatesToMap() {
+
+			d3.select('#states').remove();
+
+	    svg.append("g")
+	      .attr("id","states")
+	      .selectAll("path")
+	      .data( topojson.feature(states_geom, states_geom.objects.states).features )
+	        .enter()
+	        .append("path")
+	        .attr("d",geoPath)
+	        .attr("class", "state")
+	        .on('mouseover', function(d) {
+
+	          var tooltip_msg = getTooltipMessage(d);
+
+	          tooltip.transition()
+	            .style("opacity", .9);
+
+	          tooltip.html(tooltip_msg)
+	            .style("left", (d3.event.pageX + 15) + "px")
+	            .style("top", (d3.event.pageY - 28) + "px");
+
+	          d3.select(this).style("stroke", "#FF0000");//make st outline red
+	          d3.select(this).style("stroke-width", "1.2");
+
+	          //https://stackoverflow.com/questions/17917072/choropleth-maps-changing-stroke-color-in-mouseover-shows-overlapping-boundari
+	          this.parentNode.appendChild(this);//append it to parent to make it move to top, otherwise outline is covered by bordering state lines
+
+	        })
+	        .on("mouseout",function(d) {
+
+	          d3.select(this).style("stroke", "#696969");//return st outline to gray
+	          d3.select(this).style("stroke-width", "1");
+
+	          tooltip.style("opacity", 0);
+
+	        });
+
+	    d3.select('#state-labels-glow').remove();
+
+	    svg.append("g")
+	      .attr("id","state-labels-glow")
+	      .selectAll("text")
+	      .data( topojson.feature(states_geom, states_geom.objects.states).features )
+	        .enter()
+	        .append("text")
+	        .text(function(d) {
+	          return d.properties.top_name;
+	        })
+	        .attr('class','state-label-glow')
+	        .attr('id', function(d){
+	          return 'state-glow-' + d.properties.stusps;
+	        })
+	        .style('fill-opacity', function (d) {
+	          var return_so = 1;
+	          if(d.properties.stusps == 'MD' || d.properties.stusps == 'DC' || d.properties.stusps == 'DE' || d.properties.stusps == 'NJ' || d.properties.stusps == 'CT' || d.properties.stusps == 'RI' || d.properties.stusps == 'MA' || d.properties.stusps == 'NH' || d.properties.stusps == 'VT') {
+	            return_so = 0;
+	          }
+	          return return_so;
+	        })
+	        .style('stroke-opacity', function (d) {
+	          var return_so = 1;
+	          if(d.properties.stusps == 'MD' || d.properties.stusps == 'DC' || d.properties.stusps == 'DE' || d.properties.stusps == 'NJ' || d.properties.stusps == 'CT' || d.properties.stusps == 'RI' || d.properties.stusps == 'MA' || d.properties.stusps == 'NH' || d.properties.stusps == 'VT') {
+	            return_so = 0;
+	          }
+	          return return_so;
+	        })
+	        .style('font-size', function (d) {
+	          var return_fontsize = '0.6em';
+	          if(d.properties.stusps == 'IN') {
+	            return_fontsize = '0.45em';
+	          }
+	          if(d.properties.stusps == 'MI') {
+	            return_fontsize = '0.6em';
+	          }
+	          if(d.properties.stusps == 'WV') {
+	            return_fontsize = '0.4em';
+	          }
+	          if(d.properties.stusps == 'MS') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'AL') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'GA') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'SC') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'VA') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'FL') {
+	            return_fontsize = '0.4em';
+	          }
+	          if(d.properties.stusps == 'ME') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'AR') {
+	            return_fontsize = '0.5em';
+	          }
+	          return return_fontsize;
+	        })
+	        .style('filter','url(#glow)')
+	        .attr("x", function(d){
+	          var return_x = 0;
+	          if(geoPath.centroid(d)[1]) {
+	            return_x = geoPath.centroid(d)[0];
+	          }
+	          if(d.properties.stusps == 'CA') {
+	            return_x += 10;
+	          }
+	          if(d.properties.stusps == 'ID') {
+	            return_x += 5;
+	          }
+	          if(d.properties.stusps == 'LA') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'MN') {
+	            return_x -= 0;
+	          }
+	          if(d.properties.stusps == 'IL') {
+	            return_x -= 4;
+	          }
+	          if(d.properties.stusps == 'IN') {
+	            return_x += 2;
+	          }
+	          if(d.properties.stusps == 'MI') {
+	            return_x += 14;
+	          }
+	          if(d.properties.stusps == 'WV') {
+	            return_x += 1;
+	          }
+	          if(d.properties.stusps == 'VA') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'FL') {
+	            return_x += 12;
+	          }
+	          if(d.properties.stusps == 'HI') {
+	            return_x += 35;
+	          }
+	          if(d.properties.stusps == 'AK') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'ME') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'MS') {
+	            return_x -= 2;
+	          }
+	          return return_x;
+	        })
+	        .attr("y", function(d){
+	          var return_y = 0;
+	          if(geoPath.centroid(d)[1]) {
+	            return_y = geoPath.centroid(d)[1];
+	          }
+	          if(d.properties.stusps == 'CA') {
+	            return_y += 30;
+	          }
+	          if(d.properties.stusps == 'ID') {
+	            return_y += 15;
+	          }
+	          if(d.properties.stusps == 'LA') {
+	            return_y += 8;
+	          }
+	          if(d.properties.stusps == 'MN') {
+	            return_y -= 22;
+	          }
+	          if(d.properties.stusps == 'MI') {
+	            return_y += 15;
+	          }
+	          if(d.properties.stusps == 'WV') {
+	            return_y -= 9;
+	          }
+	          if(d.properties.stusps == 'SC') {
+	            return_y -= 6;
+	          }
+	          if(d.properties.stusps == 'NC') {
+	            return_y -= 4;
+	          }
+	          if(d.properties.stusps == 'HI') {
+	            return_y -= 10;
+	          }
+	          if(d.properties.stusps == 'AK') {
+	            return_y -= 8;
+	          }
+	          if(d.properties.stusps == 'NY') {
+	            return_y += 3;
+	          }
+	          if(d.properties.stusps == 'AR') {
+	            return_y -= 5;
+	          }
+	          if(d.properties.stusps == 'MS') {
+	            return_y -= 15;
+	          }
+	          return return_y;
+	        })
+
+	    d3.select('#state-labels').remove();
+	    svg.append("g")
+	      .attr("id","state-labels")
+	      .selectAll("text")
+	      .data( topojson.feature(states_geom, states_geom.objects.states).features )
+	        .enter()
+	        .append("text")
+	        .text(function(d) {
+	          return d.properties.top_name;
+	        })
+	        .attr('class','state-label')
+	        .attr('id', function(d){
+	          return 'state-label-' + d.properties.stusps;
+	        })
+	        .style('fill-opacity', function (d) {
+	          var return_so = 1;
+	          if(d.properties.stusps == 'MD' || d.properties.stusps == 'DC' || d.properties.stusps == 'DE' || d.properties.stusps == 'NJ' || d.properties.stusps == 'CT' || d.properties.stusps == 'RI' || d.properties.stusps == 'MA' || d.properties.stusps == 'NH' || d.properties.stusps == 'VT') {
+	            return_so = 0;
+	          }
+	          return return_so;
+	        })
+	        .style('font-size', function (d) {
+	          var return_fontsize = '0.6em';
+	          if(d.properties.stusps == 'IN') {
+	            return_fontsize = '0.45em';
+	          }
+	          if(d.properties.stusps == 'MI') {
+	            return_fontsize = '0.6em';
+	          }
+	          if(d.properties.stusps == 'WV') {
+	            return_fontsize = '0.4em';
+	          }
+	          if(d.properties.stusps == 'MS') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'AL') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'GA') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'SC') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'VA') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'FL') {
+	            return_fontsize = '0.4em';
+	          }
+	          if(d.properties.stusps == 'ME') {
+	            return_fontsize = '0.5em';
+	          }
+	          if(d.properties.stusps == 'AR') {
+	            return_fontsize = '0.5em';
+	          }
+	          return return_fontsize;
+	        })
+	        .attr("x", function(d){
+	          var return_x = 0;
+	          if(geoPath.centroid(d)[1]) {
+	            return_x = geoPath.centroid(d)[0];
+	          }
+	          if(d.properties.stusps == 'CA') {
+	            return_x += 10;
+	          }
+	          if(d.properties.stusps == 'ID') {
+	            return_x += 5;
+	          }
+	          if(d.properties.stusps == 'LA') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'MN') {
+	            return_x -= 0;
+	          }
+	          if(d.properties.stusps == 'IL') {
+	            return_x -= 4;
+	          }
+	          if(d.properties.stusps == 'IN') {
+	            return_x += 2;
+	          }
+	          if(d.properties.stusps == 'MI') {
+	            return_x += 14;
+	          }
+	          if(d.properties.stusps == 'WV') {
+	            return_x += 1;
+	          }
+	          if(d.properties.stusps == 'VA') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'FL') {
+	            return_x += 12;
+	          }
+	          if(d.properties.stusps == 'HI') {
+	            return_x += 35;
+	          }
+	          if(d.properties.stusps == 'AK') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'ME') {
+	            return_x += 3;
+	          }
+	          if(d.properties.stusps == 'MS') {
+	            return_x -= 2;
+	          }
+	          return return_x;
+	        })
+	        .attr("y", function(d){
+	          var return_y = 0;
+	          if(geoPath.centroid(d)[1]) {
+	            return_y = geoPath.centroid(d)[1];
+	          }
+	          if(d.properties.stusps == 'CA') {
+	            return_y += 30;
+	          }
+	          if(d.properties.stusps == 'ID') {
+	            return_y += 15;
+	          }
+	          if(d.properties.stusps == 'LA') {
+	            return_y += 8;
+	          }
+	          if(d.properties.stusps == 'MN') {
+	            return_y -= 22;
+	          }
+	          if(d.properties.stusps == 'MI') {
+	            return_y += 15;
+	          }
+	          if(d.properties.stusps == 'WV') {
+	            return_y -= 9;
+	          }
+	          if(d.properties.stusps == 'SC') {
+	            return_y -= 6;
+	          }
+	          if(d.properties.stusps == 'NC') {
+	            return_y -= 4;
+	          }
+	          if(d.properties.stusps == 'HI') {
+	            return_y -= 10;
+	          }
+	          if(d.properties.stusps == 'AK') {
+	            return_y -= 8;
+	          }
+	          if(d.properties.stusps == 'NY') {
+	            return_y += 3;
+	          }
+	          if(d.properties.stusps == 'AR') {
+	            return_y -= 5;
+	          }
+	          if(d.properties.stusps == 'MS') {
+	            return_y -= 15;
+	          }
+	          return return_y;
+	        })
+	  }
+
+	  function updateMap() {
+
+			svg.selectAll(".state")
+	      .style('fill', function(d) {
+
+					var fill = novaluecolor;
+	        var state_label_id = '#state-label-' + d.properties.stusps;
+	        var state_glow_id = '#state-glow-' + d.properties.stusps;
+
+	        fill = getColorForName(d.properties.top_name);
+	        d3.select(state_label_id).text(d.properties.top_name);
+	        d3.select(state_glow_id).text(d.properties.top_name);
+	        return fill;
+	      });
+
+	  }
+
+	  function addLegendPieChart(data, height, width ) {
+
+	    var columns = [];
+	    var colors = [];
+	    var module_data = [];
+	    for (name in data) {
+	      columns.push(data[name].name);
+	      colors.push(data[name].color);
+	      module_data[data[name].name] = data[name].pct;
+	    }
+
+	    var colourScale = d3.scaleOrdinal()
+	      .domain(columns)
+	      .range(colors);
+
+			var chart = pieChart(colourScale)
+	    .width(width)
+	    .height(height)
+	    .margin({
+	      top: 0,
+	      bottom: 0,
+	      left: 80,
+	      right: 120
+	    })
+	    .columns(columns);
+
+			d3.select('#donut-svg').remove();
+
+			var donut_wrapper = d3.select('#donut-wrapper');
+
+			d3.select('#donut-wrapper')
+				.append('svg')
+					.attr('viewBox', '0 0 371 181')
+					.attr('id','donut-svg');
+
+			var donut_svg = d3.select('#donut-svg');
+			donut_svg.append('rect')
+				.attr('id', 'donut-background')
+				.style('fill', '#ffffff')
+				.style('width', '370px')
+				.style('height', '180px')
+				.attr('transform', 'translate (0, 1)');
+
+	    var container = d3.select('#donut-svg')
+	      .datum(module_data)
+	      .call(chart);
+
+
+	  }
+
+	  function getTooltipMessage(d) {
+	    var tooltip_msg = "";
+	    for (var yr_st_nm in names_data) {
+	      if(d.properties.stusps == names_data[yr_st_nm].st && names_data[yr_st_nm].yr == this_year) {
+	        var display_gender = 'boy';
+	        if(sex == 'F') { display_gender = 'girl' }
+	        tooltip_msg = "In " + this_year + " the most popular " + display_gender + " name in " + abbrRegion(d.properties.stusps, 'name') + " was " + d.properties.top_name + " [" + names_data[yr_st_nm].total + " births].";
+	      }
+	    }
+
+	    return tooltip_msg;
+	  }
+
+	  function clearMap() {
+
+	    svg.selectAll(".state")
+	      .style('fill', function(d) {
+	        return novaluecolor;
+	      });
+
+	  }
+
+	  function populateNameColor() {
+
+	    var unique = [];
+
+	    for (var yr_st_nm in names_data) {
+	      var name = names_data[yr_st_nm].name;
+	      if(unique.indexOf(name) == -1) {
+	        unique.push(name)
+	      }
+	    }
+
+	    var i = 0;
+	    for (var name in unique) {
+	      var name_color = {};
+	      name_color.name = unique[name];
+	      name_color.color = css_color_names[i];
+	      nameColor.push(name_color);
+	      i++;
+	    }
+
+	  }
+
+	  function getColorForName(name) {
+	    for (i = 0; i < nameColor.length; i++) {
+	      if(nameColor[i].name == name) {
+	        return nameColor[i].color;
+	      }
+	    }
+	  }
+
+	  function getSexFromQS() {
+	    var sex_query = gup('sex', document.location.search);
+	    if(sex_query != null) {
+	      return sex_query;
+	    }
+	    else {
+	      return default_sex;
+	    }
+	  }
+
+	  function getYearFromQS() {
+	    var year_query = gup('year', document.location.search);
+	    if(year_query != null) {
+	      return year_query;
+	    }
+	    else {
+	      return this_year;
+	    }
+	  }
+
+	  function shuffleArray(array) {
+	    for (var i = array.length - 1; i > 0; i--) {
+	      var j = Math.floor(Math.random() * (i + 1));
+	      [array[i], array[j]] = [array[j], array[i]];
+	    }
+	    return array;
+	  }
+
+		function addSlider() {
+
+			d3.select('#slider-year').remove();
+
+			d3.select('#slider-wrapper')
+				.append('input')
+					.attr('type', 'range')
+					.attr('id','slider-year')
+					.attr('min', min_year)
+					.attr('max', max_year);
+
+			d3.select('#min-year-label').html(min_year);
+			d3.select('#max-year-label').html(max_year);
+			d3.select('#slider-year').attr('value', this_year);
+
+			d3.select('#slider-year').on('input', function() {
+	  		this_year = this.value;
+				d3.select('#year-wrapper').html(this_year);
+				d3.select('#navbar-year').html(this_year);
+				tooltip.style("opacity", 0);
+				joinDataToGeom();
+				handlePieChart();
+				updateMap();
+			});
+
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		document.addEventListener('DOMContentLoaded', function () {
+
+			// Get all "navbar-burger" elements
+			var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+			// Check if there are any navbar burgers
+			if ($navbarBurgers.length > 0) {
+				// Add a click event on each of them
+				$navbarBurgers.forEach(function ($el) {
+					$el.addEventListener('click', function () {
+						// Get the target from the "data-target" attribute
+						var target = $el.dataset.target;
+						var $target = document.getElementById(target);
+						// Toggle the class on both the "navbar-burger" and the "navbar-menu"
+						$el.classList.toggle('is-active');
+						$target.classList.toggle('is-active');
+						$target.classList.toggle('navbar-menu');
+						$target.childNodes[1].classList.toggle('navbar-end');
+					});
+				});
+			}
+		});
+
+	</script>
+
+</body>
+</html>

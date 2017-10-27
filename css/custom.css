@@ -1,0 +1,334 @@
+#about-legend-wrapper {
+  font-size:.7em;
+  text-align:center;
+  margin-top: 3px;
+}
+
+#about-map-img-wrapper {
+  text-align:center;
+}
+
+#about-map-img-wrapper img {
+  height:150px;
+}
+
+#about-nmp {
+  height:30px;
+}
+
+#about-sig {
+  margin-right:50px;
+  text-align:right;
+}
+
+#map-footer-column,#map-column {
+  background-color:#fff;
+}
+
+#max-year-label {
+  float:right;
+  margin-right:12%;
+}
+
+#min-year-label {
+  float:left;
+  margin-left:12%;
+}
+
+#slider-wrapper {
+  font-size:0;
+  margin:0 12%;
+}
+
+#slider-year {
+  margin-top:0;
+  vertical-align:middle;
+  width:100%;
+}
+
+#year-wrapper {
+  color:#21409a;
+  font-family:Muli, sans-serif;
+  font-size:2em;
+  font-weight:800;
+  text-align:center;
+}
+
+.about-examples {
+  margin: 10px;
+}
+
+.about-examples div {
+  padding: 0;
+}
+
+.boygirl {
+  justify-content:center!important;
+}
+
+.boygirl-column,.slider-column {
+  margin: 0;
+  padding: 0;
+}
+
+.slider-column {
+  margin-top: 2%;
+}
+
+.control {
+
+}
+
+.boygirl-switch-column {
+
+}
+
+.boygirl {
+  margin: 0 !important;
+}
+
+.column {
+  /*border: 1px solid blue;*/
+}
+
+.donut-column {
+
+}
+
+#donut-wrapper {
+  /*font-size: 0;*/
+  /*border: 1px solid orange;*/
+}
+
+#donut-svg {
+  font-size: 1em;
+}
+
+#donut-background {
+  /*stroke: green;*/
+  /*stroke-weight: 1px;*/
+}
+
+.pie-chart-label {
+  fill:#696969;
+  font-family:Muli, sans-serif;
+}
+
+.pie-chart-label tspan {
+  font-size: .6em;
+}
+
+.footer-content {
+  color:#fff;
+  font-size:.8em;
+}
+
+.footer-content a {
+  color:#fff;
+  text-decoration:underline;
+}
+
+.hero .container {
+  width:95%;
+}
+
+.modal {
+  font-family:Muli, sans-serif;
+  font-size:.9em;
+}
+
+.modal a {
+  color:0;
+}
+
+.modal-content {
+  background-color:#fff;
+  color:#696969;
+  /*display:none;*/
+  font-family:Muli, sans-serif;
+  font-size:.8em;
+  padding:20px;
+}
+
+.modal-content a,#about-legend-wrapper a {
+  color:#696969;
+  text-decoration:underline;
+}
+
+.modal-content h1 {
+  color:#000;
+  font-size:1.2em;
+  font-weight:700;
+  margin-bottom:.6em;
+}
+
+.modal-content h2 {
+  color:#000;
+  font-size:1em;
+  font-weight:700;
+  margin-bottom:.6em;
+}
+
+.modal-content li {
+  display: inline-block;
+  list-style-type: none;
+  padding-right: 1em;
+  vertical-align: middle;
+}
+
+.modal-content li a {
+
+
+}
+
+.modal-content p {
+  margin-bottom:.6em;
+}
+
+
+/*#donut-link-wrapper {
+  border: 1px solid red;
+  height: 32px;
+  display: inline-block;
+}*/
+
+
+
+
+
+.modal-content ul {
+  padding-bottom:1em;
+}
+
+
+.navbar-item {
+  color:rgba(255,255,255,1)!important;
+  font-size:1.2em;
+  font-weight:700;
+  opacity:1;
+}
+
+.about-link-header {
+  font-size:.9em;
+  font-weight:400;
+  text-decoration:underline;
+}
+
+.section {
+  padding-bottom:12px;
+  padding-top:12px;
+}
+
+.state {
+  stroke:#696969;
+  stroke-width:1;
+}
+
+.state-label {
+  fill:#151515;
+  font-family:Muli, sans-serif;
+  font-size:.6em;
+  text-anchor:middle;
+}
+
+.state-label-glow {
+  fill:#FFF;
+  font-family:Muli, sans-serif;
+  font-size:.6em;
+  stroke:#FFF;
+  stroke-width:.5px;
+  text-anchor:middle;
+}
+
+.year-column,.donut-column,.slider-label-column {
+  margin:0;
+  padding:0;
+}
+
+.slider-label-column {
+  margin-top: 3px;
+  padding-bottom: 10px;
+}
+
+.year-column {
+  /*border: 1px solid red;*/
+  margin-top: 5%;
+}
+
+body {
+  background:#FFF;
+  margin:0;
+  padding:0;
+}
+
+div.tooltip {
+  background:#F5F5F5;
+  border:1px solid grey;
+  border-radius:3px;
+  color:grey;
+  font-family:'Droid Sans Mono', monospace;
+  font-size:.7em;
+  max-width:300px;
+  padding:3px 6px;
+  pointer-events:none;
+  position:absolute;
+}
+
+polyline {
+  fill:none;
+  opacity:0.4;
+  stroke:#000;
+  stroke-width:1px;
+}
+
+@media screen and (max-width: 920px) {
+
+  #min-year-label, #max-year-label {
+    font-size: 1.2em;
+  }
+}
+
+@media screen and (max-width: 1216px) {
+
+  .footer-content {
+    font-size: .6em;
+  }
+
+}
+
+@media screen and (max-width: 1024px) {
+
+
+}
+
+@media screen and (max-width: 700px) {
+  .navbar-item {
+    font-size: 1.2em;
+  }
+}
+
+@media screen and (max-width: 575px) {
+
+
+}
+
+@media screen and (max-width: 538px) {
+
+  .navbar-item {
+    font-size: .7em;
+  }
+
+  #year-wrapper {
+    font-size:1.5em;
+
+  }
+
+  #min-year-label, #max-year-label {
+    font-size: .7em;
+  }
+
+}
+
+@media screen and (min-width: 1024px) {
+
+}
