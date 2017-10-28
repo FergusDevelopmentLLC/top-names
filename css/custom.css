@@ -281,6 +281,10 @@ polyline {
   stroke-width:1px;
 }
 
+.sharethis-inline-share-buttons {
+  margin-bottom: 5px;
+}
+
 @media screen and (max-width: 920px) {
 
   #min-year-label, #max-year-label {
