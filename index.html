@@ -91,7 +91,6 @@
 							</div>
 						</div>
 						<div class="column is-12">
-							<div class="sharethis-inline-share-buttons"></div>
 							<div id='about-legend-wrapper'>
 								Data Source: <a href='https://www.ssa.gov/oact/babynames/limits.html' target='_blank'>U.S. Social Security Administration</a><br/>
 							</div>
@@ -105,8 +104,9 @@
 	<footer class="footer">
 		<div class="container">
 			<div class="content has-text-centered footer-content">
+				<div class="sharethis-inline-share-buttons"></div>
 				<p>
-					&copy; Copyright <span id='copyright-year'></span> <a href='https://fergusdevelopmentllc.github.io/'>Fergus Development LLC</a>
+					&copy; Copyright <span id='copyright-year'></span>, <a href='https://fergusdevelopmentllc.github.io/'>FergusLLC</a><br/><a href='https://fergusdevelopmentllc.github.io/contact.html'>Hire me!</a>
 				</p>
 			</div>
 		</div>
@@ -165,6 +165,8 @@
 
 	  var css_color_names = ["sandybrown","cyan","aquamarine","burlywood","cadetblue","chartreuse","coral","cornflowerblue","cyan","darkgoldenrod","darkkhaki","darkorange","darksalmon","darkseagreen","darkturquoise","deepskyblue","gold","goldenrod","greenyellow","hotpink","khaki","lawngreen","lightblue","lightcoral","lightgreen","lightpink","lightsalmon","lightseagreen","lightskyblue","lightsteelblue","lime","limegreen","mediumaquamarine","#e6c2ef","mediumpurple","mediumseagreen","mediumspringgreen","mediumturquoise","orange","orchid","palegoldenrod","palegreen","paleturquoise","palevioletred","peru","pink","plum","powderblue","rosybrown","salmon","#ffb3b3","skyblue","#eed7f4","springgreen","tan","tomato","turquoise","violet","wheat","yellow","yellowgreen"];
 
+		d3.select('#copyright-year').html((new Date()).getFullYear());
+		
 		d3.selectAll('.about-link').on('click', function() {
 			d3.selectAll('.modal').classed('is-active', true);
 		});
