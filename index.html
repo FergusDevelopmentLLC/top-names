@@ -5,6 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0">
 
+		<!-- https://medium.com/slack-developer-blog/everything-you-ever-wanted-to-know-about-unfurling-but-were-afraid-to-ask-or-how-to-make-your-e64b4bb9254 -->
+		<!-- facebook open graph tags -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="http://whatsinaname.us/top-names/" />
+		<meta property="og:title" content="Most Popular U.S. Boy Girl Names (1910-2016) #whatsinaname" />
+		<meta property="og:description" content="Most Popular U.S. Boy Girl Names of the Last Century (1910-2016)." />
+		<meta property="og:image" content="https://fergusdevelopmentllc.github.io/images/names_800x400.png" />
+
+		<!-- twitter card tags additive with the og: tags -->
+		<meta name="twitter:card" content="https://fergusdevelopmentllc.github.io/images/names_800x400.png">
+		<meta name="twitter:domain" value="www.whatsinaname.us" />
+		<meta name="twitter:title" value="Most Popular U.S. Boy Girl Names (1910-2016) #whatsinaname" />
+		<meta name="twitter:description" value="Most Popular U.S. Boy Girl Names of the Last Century (1910-2016)." />
+		<meta name="twitter:image" content="https://fergusdevelopmentllc.github.io/images/top_names_800x400.png" />
+		<meta name="twitter:url" value="http://whatsinaname.us/top-names/" />
+
 		<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
 		<link rel="stylesheet" href="css/bulma.css">
 		<link rel="stylesheet" href="css/custom.css">
@@ -166,7 +182,7 @@
 	  var css_color_names = ["sandybrown","cyan","aquamarine","burlywood","cadetblue","chartreuse","coral","cornflowerblue","cyan","darkgoldenrod","darkkhaki","darkorange","darksalmon","darkseagreen","darkturquoise","deepskyblue","gold","goldenrod","greenyellow","hotpink","khaki","lawngreen","lightblue","lightcoral","lightgreen","lightpink","lightsalmon","lightseagreen","lightskyblue","lightsteelblue","lime","limegreen","mediumaquamarine","#e6c2ef","mediumpurple","mediumseagreen","mediumspringgreen","mediumturquoise","orange","orchid","palegoldenrod","palegreen","paleturquoise","palevioletred","peru","pink","plum","powderblue","rosybrown","salmon","#ffb3b3","skyblue","#eed7f4","springgreen","tan","tomato","turquoise","violet","wheat","yellow","yellowgreen"];
 
 		d3.select('#copyright-year').html((new Date()).getFullYear());
-		
+
 		d3.selectAll('.about-link').on('click', function() {
 			d3.selectAll('.modal').classed('is-active', true);
 		});
